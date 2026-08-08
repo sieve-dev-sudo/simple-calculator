@@ -4,8 +4,23 @@ let previous = null;
 let operator = null;
 let resetNext = false;
 
+const opSymbols = {
+  '+': '+',
+  '-': '-',
+  '*': 'x',
+  '/': '/'
+};
+
 function updateDisplay() {
-  display.textContent = current;
+  if (operator !== null && resetNext) {
+    // Just chose an operator, show "previous operator"
+    display.textContent = `${previous} ${opSymbols[operator]}`;
+  } else if (operator !== null) {
+    // Typing the second number, show "previous operator current"
+    display.textContent = `${previous} ${opSymbols[operator]} ${current}`;
+  } else {
+    display.textContent = current;
+  }
 }
 
 function inputNumber(num) {
@@ -25,6 +40,7 @@ function chooseOperator(op) {
   previous = current;
   operator = op;
   resetNext = true;
+  updateDisplay();
 }
 
 function calculate() {

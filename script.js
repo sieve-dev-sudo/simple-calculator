@@ -33,7 +33,6 @@ function inputDecimal() {
     expression = '';
     justCalculated = false;
   }
-  // find the current number segment (after last operator/paren)
   const segment = expression.split(/[\+\-\*\/\(]/).pop();
   if (segment.includes('.')) return;
   if (segment === '' || ['+', '-', '*', '/', '('].includes(expression.slice(-1))) {
@@ -71,24 +70,6 @@ function inputPercent() {
   updateDisplay();
 }
 
-function toggleSign() {
-  const negMatch = expression.match(/\(-(\d+\.?\d*)\)$/);
-  if (negMatch) {
-    expression = expression.slice(0, -negMatch[0].length) + negMatch[1];
-    updateDisplay();
-    return;
-  }
-  const numMatch = expression.match(/(\d+\.?\d*)$/);
-  if (numMatch) {
-    const num = numMatch[1];
-    const start = expression.length - num.length;
-    expression = expression.slice(0, start) + '(-' + num + ')';
-  } else if (expression === '') {
-    expression = '(-';
-  }
-  updateDisplay();
-}
-
 function clearAll() {
   expression = '';
   justCalculated = false;
@@ -99,7 +80,6 @@ function calculate() {
   if (expression === '') return;
   let evalExpr = expression;
 
-  // auto-close any unmatched parentheses
   const openCount = (evalExpr.match(/\(/g) || []).length;
   const closeCount = (evalExpr.match(/\)/g) || []).length;
   evalExpr += ')'.repeat(Math.max(0, openCount - closeCount));
@@ -135,7 +115,6 @@ document.querySelectorAll('[data-op]').forEach(btn => {
 document.getElementById('decimal').addEventListener('click', inputDecimal);
 document.getElementById('paren').addEventListener('click', inputParen);
 document.getElementById('percent').addEventListener('click', inputPercent);
-document.getElementById('toggle-sign').addEventListener('click', toggleSign);
 document.getElementById('equals').addEventListener('click', calculate);
 document.getElementById('clear').addEventListener('click', clearAll);
 
@@ -151,4 +130,21 @@ document.addEventListener('keydown', (e) => {
     expression = expression.slice(0, -1);
     updateDisplay();
   }
+});
+
+// --- Dark mode toggle ---
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+function applyTheme(isDark) {
+  document.body.classList.toggle('dark', isDark);
+  themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+}
+
+const savedTheme = localStorage.getItem('calculator-theme');
+applyTheme(savedTheme === 'dark');
+
+themeToggleBtn.addEventListener('click', () => {
+  const isDark = !document.body.classList.contains('dark');
+  applyTheme(isDark);
+  localStorage.setItem('calculator-theme', isDark ? 'dark' : 'light');
 });

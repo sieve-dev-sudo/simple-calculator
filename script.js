@@ -1,73 +1,127 @@
 const display = document.getElementById('display');
-let current = '0';
-let previous = null;
-let operator = null;
-let resetNext = false;
-
-const opSymbols = {
-  '+': '+',
-  '-': '-',
-  '*': 'x',
-  '/': '/'
-};
+let expression = '';
+let justCalculated = false;
 
 function updateDisplay() {
-  if (operator !== null && resetNext) {
-    // Just chose an operator, show "previous operator"
-    display.textContent = `${previous} ${opSymbols[operator]}`;
-  } else if (operator !== null) {
-    // Typing the second number, show "previous operator current"
-    display.textContent = `${previous} ${opSymbols[operator]} ${current}`;
-  } else {
-    display.textContent = current;
-  }
+  display.textContent = expression === '' ? '0' : expression;
 }
 
 function inputNumber(num) {
-  if (resetNext) {
-    current = num;
-    resetNext = false;
+  if (justCalculated) {
+    expression = '';
+    justCalculated = false;
+  }
+  expression += num;
+  updateDisplay();
+}
+
+function inputOperator(op) {
+  if (expression === '' && op !== '-') return;
+  justCalculated = false;
+
+  const lastChar = expression.slice(-1);
+  if (['+', '-', '*', '/'].includes(lastChar)) {
+    expression = expression.slice(0, -1) + op;
   } else {
-    current = current === '0' ? num : current + num;
+    expression += op;
   }
   updateDisplay();
 }
 
-function chooseOperator(op) {
-  if (operator !== null && !resetNext) {
-    calculate();
+function inputDecimal() {
+  if (justCalculated) {
+    expression = '';
+    justCalculated = false;
   }
-  previous = current;
-  operator = op;
-  resetNext = true;
+  // find the current number segment (after last operator/paren)
+  const segment = expression.split(/[\+\-\*\/\(]/).pop();
+  if (segment.includes('.')) return;
+  if (segment === '' || ['+', '-', '*', '/', '('].includes(expression.slice(-1))) {
+    expression += '0.';
+  } else {
+    expression += '.';
+  }
   updateDisplay();
 }
 
-function calculate() {
-  if (operator === null || previous === null) return;
-  const a = parseFloat(previous);
-  const b = parseFloat(current);
-  let result;
-  switch (operator) {
-    case '+': result = a + b; break;
-    case '-': result = a - b; break;
-    case '*': result = a * b; break;
-    case '/': result = b === 0 ? 'Error' : a / b; break;
-    default: return;
+function inputParen() {
+  if (justCalculated) {
+    expression = '';
+    justCalculated = false;
   }
-  current = result.toString();
-  operator = null;
-  previous = null;
-  resetNext = true;
+  const openCount = (expression.match(/\(/g) || []).length;
+  const closeCount = (expression.match(/\)/g) || []).length;
+  const lastChar = expression.slice(-1);
+
+  if (openCount === closeCount || ['+', '-', '*', '/', '('].includes(lastChar) || expression === '') {
+    expression += '(';
+  } else {
+    expression += ')';
+  }
+  updateDisplay();
+}
+
+function inputPercent() {
+  const match = expression.match(/(\d+\.?\d*)$/);
+  if (!match) return;
+  const num = match[1];
+  const start = expression.length - num.length;
+  expression = expression.slice(0, start) + '(' + num + '/100)';
+  justCalculated = false;
+  updateDisplay();
+}
+
+function toggleSign() {
+  const negMatch = expression.match(/\(-(\d+\.?\d*)\)$/);
+  if (negMatch) {
+    expression = expression.slice(0, -negMatch[0].length) + negMatch[1];
+    updateDisplay();
+    return;
+  }
+  const numMatch = expression.match(/(\d+\.?\d*)$/);
+  if (numMatch) {
+    const num = numMatch[1];
+    const start = expression.length - num.length;
+    expression = expression.slice(0, start) + '(-' + num + ')';
+  } else if (expression === '') {
+    expression = '(-';
+  }
   updateDisplay();
 }
 
 function clearAll() {
-  current = '0';
-  previous = null;
-  operator = null;
-  resetNext = false;
+  expression = '';
+  justCalculated = false;
   updateDisplay();
+}
+
+function calculate() {
+  if (expression === '') return;
+  let evalExpr = expression;
+
+  // auto-close any unmatched parentheses
+  const openCount = (evalExpr.match(/\(/g) || []).length;
+  const closeCount = (evalExpr.match(/\)/g) || []).length;
+  evalExpr += ')'.repeat(Math.max(0, openCount - closeCount));
+
+  if (!/^[0-9+\-*/(). ]*$/.test(evalExpr)) {
+    display.textContent = 'Error';
+    expression = '';
+    return;
+  }
+
+  try {
+    const result = Function('"use strict"; return (' + evalExpr + ')')();
+    if (result === undefined || isNaN(result) || !isFinite(result)) {
+      throw new Error('Invalid');
+    }
+    expression = (Math.round(result * 1e10) / 1e10).toString();
+    justCalculated = true;
+    updateDisplay();
+  } catch (e) {
+    display.textContent = 'Error';
+    expression = '';
+  }
 }
 
 document.querySelectorAll('[data-num]').forEach(btn => {
@@ -75,15 +129,26 @@ document.querySelectorAll('[data-num]').forEach(btn => {
 });
 
 document.querySelectorAll('[data-op]').forEach(btn => {
-  btn.addEventListener('click', () => chooseOperator(btn.dataset.op));
+  btn.addEventListener('click', () => inputOperator(btn.dataset.op));
 });
 
+document.getElementById('decimal').addEventListener('click', inputDecimal);
+document.getElementById('paren').addEventListener('click', inputParen);
+document.getElementById('percent').addEventListener('click', inputPercent);
+document.getElementById('toggle-sign').addEventListener('click', toggleSign);
 document.getElementById('equals').addEventListener('click', calculate);
 document.getElementById('clear').addEventListener('click', clearAll);
 
 document.addEventListener('keydown', (e) => {
   if (e.key >= '0' && e.key <= '9') inputNumber(e.key);
-  if (['+', '-', '*', '/'].includes(e.key)) chooseOperator(e.key);
+  if (['+', '-', '*', '/'].includes(e.key)) inputOperator(e.key);
+  if (e.key === '.') inputDecimal();
+  if (e.key === '(' || e.key === ')') inputParen();
+  if (e.key === '%') inputPercent();
   if (e.key === 'Enter' || e.key === '=') calculate();
   if (e.key === 'Escape') clearAll();
+  if (e.key === 'Backspace') {
+    expression = expression.slice(0, -1);
+    updateDisplay();
+  }
 });

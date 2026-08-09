@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧮 Simple Calculator
+# Simple Calculator
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -18,9 +18,13 @@ A simple calculator UI with number pad, operators (+, −, ×, ÷), clear (C), a
 ## ✨ Features
 
 - Basic arithmetic operations: addition, subtraction, multiplication, division
+- Parentheses `( )` support for grouped expressions
+- Percent `%` conversion (e.g. `50%` → `0.5`)
+- Sign toggle `+/−` to switch between positive and negative
+- Decimal point `.` support
 - Live expression display (e.g. `9 + 5`)
 - Clear (C) button to reset
-- Keyboard support (numbers, `+ - * /`, `Enter`, `Escape`)
+- Keyboard support (numbers, `+ - * / . ( ) %`, `Enter`, `Escape`, `Backspace`)
 - Responsive, rounded button design
 
 ## 📂 Project Structure

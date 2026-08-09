@@ -1,35 +1,70 @@
 * { box-sizing: border-box; }
 
+:root {
+  --page-bg: #d4d4d4;
+  --card-bg: #f2f2f2;
+  --display-bg: #e2e2e2;
+  --display-text: #2b2b2b;
+  --key-bg: #ffffff;
+  --key-text: #2b2b2b;
+  --op-bg: #2b2b2b;
+  --op-text: #ffffff;
+  --clear-bg: #e73c3c;
+  --clear-text: #ffffff;
+  --equals-bg: #2b2b2b;
+  --equals-text: #ffffff;
+  --shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+body.dark {
+  --card-bg: #1c1c1e;
+  --display-bg: #2c2c2e;
+  --display-text: #f5f5f5;
+  --key-bg: #3a3a3c;
+  --key-text: #f5f5f5;
+  --op-bg: #f2f2f2;
+  --op-text: #1c1c1e;
+  --clear-bg: #e73c3c;
+  --clear-text: #ffffff;
+  --equals-bg: #f2f2f2;
+  --equals-text: #1c1c1e;
+  --shadow: 0 20px 40px rgba(0,0,0,0.55);
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #d4d4d4;
+  background: var(--page-bg);
   font-family: 'Segoe UI', Arial, sans-serif;
+  transition: background 0.3s ease;
 }
 
 .calculator {
+  position: relative;
   width: 340px;
-  background: #f2f2f2;
+  background: var(--card-bg);
   border-radius: 28px;
   padding: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .display {
-  background: #e2e2e2;
+  background: var(--display-bg);
   border-radius: 14px;
   padding: 22px 20px;
   margin-bottom: 20px;
   text-align: right;
   font-size: 38px;
-  color: #2b2b2b;
+  color: var(--display-text);
   font-weight: 400;
   overflow-x: auto;
   white-space: nowrap;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.12);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .keys {
@@ -45,10 +80,10 @@ button {
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
-  background: #ffffff;
-  color: #2b2b2b;
+  background: var(--key-bg);
+  color: var(--key-text);
   box-shadow: 0 4px 0 rgba(0,0,0,0.06);
-  transition: transform 0.05s ease, filter 0.15s ease;
+  transition: transform 0.05s ease, filter 0.15s ease, background 0.3s ease, color 0.3s ease;
 }
 
 button:active {
@@ -60,21 +95,21 @@ button:hover {
 }
 
 .op {
-  background: #2b2b2b;
-  color: #ffffff;
+  background: var(--op-bg);
+  color: var(--op-text);
 }
 
 .clear {
-  background: #e73c3c;
-  color: #ffffff;
+  background: var(--clear-bg);
+  color: var(--clear-text);
 }
 
 .func {
-  background: #ffffff;
-  color: #2b2b2b;
+  background: var(--key-bg);
+  color: var(--key-text);
 }
 
 .equals {
-  background: #2b2b2b;
-  color: #ffffff;
+  background: var(--equals-bg);
+  color: var(--equals-text);
 }

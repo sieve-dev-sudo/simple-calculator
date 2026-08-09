@@ -1,6 +1,6 @@
 <div align="center">
 
-# Simple Calculator
+# Online - Calculator
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -11,17 +11,13 @@
 
 ---
 
-## 🖥️ Preview
-
-A simple calculator UI with number pad, operators (+, −, ×, ÷), clear (C), and equals (=).
-
 ## ✨ Features
 
 - Basic arithmetic operations: addition, subtraction, multiplication, division
 - Parentheses `( )` support for grouped expressions
 - Percent `%` conversion (e.g. `50%` → `0.5`)
-- Sign toggle `+/−` to switch between positive and negative
 - Decimal point `.` support
+- Dark mode 🌙 / ☀️ toggle with saved preference (localStorage)
 - Live expression display (e.g. `9 + 5`)
 - Clear (C) button to reset
 - Keyboard support (numbers, `+ - * / . ( ) %`, `Enter`, `Escape`, `Backspace`)
@@ -30,19 +26,21 @@ A simple calculator UI with number pad, operators (+, −, ×, ÷), clear (C), a
 ## 📂 Project Structure
 
 ```
-simple-calculator/
-├── index.html      # Markup structure
-├── style.css       # Styling
-├── script.js       # Calculator logic
+Online-Calculator/
+├── index.html  # Markup structure
+├── style.css ​​​  # Styling
+├── script.js   # Calculator logic
 └── README.md
 ```
+
+> Preview: A minimal calculator with number pad, operators, parentheses, percent, decimal, and dark mode toggle.
 
 ## 🚀 Getting Started
 
 1. Clone the repository
-  ```bash
-  git clone https://github.com/<username>/simple-calculator.git
-  ```
+```bash
+   git clone https://github.com/<username>/Online-Calculator.git
+```
 2. Open `index.html` in your browser.
 
 ## 🛠️ Built With

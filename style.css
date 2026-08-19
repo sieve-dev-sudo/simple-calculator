@@ -113,3 +113,14 @@ button:hover {
   background: var(--equals-bg);
   color: var(--equals-text);
 }
+
+.footer-credit {
+  margin: 18px 0 0;
+  text-align: center;
+  font-size: 14.5px;
+  color: #6b6b6b;
+}
+
+body.dark .footer-credit {
+  color: #a0a0a0;
+}

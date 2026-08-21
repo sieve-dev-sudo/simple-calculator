@@ -3,7 +3,8 @@ let expression = '';
 let justCalculated = false;
 
 function updateDisplay() {
-  display.textContent = expression === '' ? '0' : expression;
+  const shown = expression.replace(/\*/g, '×').replace(/\//g, '÷');
+  display.textContent = shown === '' ? '0' : shown;
 }
 
 function inputNumber(num) {
@@ -33,6 +34,7 @@ function inputDecimal() {
     expression = '';
     justCalculated = false;
   }
+  // find the current number segment (after last operator/paren)
   const segment = expression.split(/[\+\-\*\/\(]/).pop();
   if (segment.includes('.')) return;
   if (segment === '' || ['+', '-', '*', '/', '('].includes(expression.slice(-1))) {
@@ -80,6 +82,7 @@ function calculate() {
   if (expression === '') return;
   let evalExpr = expression;
 
+  // auto-close any unmatched parentheses
   const openCount = (evalExpr.match(/\(/g) || []).length;
   const closeCount = (evalExpr.match(/\)/g) || []).length;
   evalExpr += ')'.repeat(Math.max(0, openCount - closeCount));

@@ -27,7 +27,7 @@
 - Percent `%` conversion (e.g. `50%` → `0.5`)
 - Decimal point `.` support
 - Dark mode 🌙 / ☀️ toggle with saved preference (localStorage)
-- Live expression display (e.g. `9 + 5`)
+- Live expression display with proper `×` `÷` symbols (e.g. `9 × 5`)
 - Clear (C) button to reset
 - Keyboard support (numbers, `+ - * / . ( ) %`, `Enter`, `Escape`, `Backspace`)
 - Responsive, rounded button design
@@ -37,19 +37,17 @@
 ```
 Online-Calculator/
 ├── index.html  # Markup structure
-├── style.css ​​​  # Styling
+├── style.css   # Styling
 ├── script.js   # Calculator logic
 └── README.md
 ```
 
-> Preview: A minimal calculator with number pad, operators, parentheses, percent, decimal, and dark mode toggle.
-
 ## 🚀 Getting Started
 
 1. Clone the repository
-```bash
+   ```bash
    git clone https://github.com/<username>/Online-Calculator.git
-```
+   ```
 2. Open `index.html` in your browser.
 
 ## 🛠️ Built With
@@ -57,3 +55,13 @@ Online-Calculator/
 - HTML5
 - CSS3
 - JavaScript (Vanilla)
+
+## 👤 Author
+
+Developed by **Mr. Siev E**
+
+---
+
+## 📄 License
+
+MIT : see [LICENSE](LICENSE).
